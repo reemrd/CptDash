@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CptDash.Report>   
+ 
+@Scripts.Render("~/bundles/jquery") 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#result").dialog({
+            autoOpen: false,
+            title: 'Список чего-то там',
+            width: 800,
+            height: 600,
+            modal: true
+        });
+    });
+    function openPopup() {
+        $("#result").dialog("open");
+    }
+</script>
+ 
+
+<h2>Поиск отчётов</h2>
+@{
+    Html.RenderAction("SearchFilters"); 
+}
+
+<table class="table">
+    <tr>
+        <th>
+            Имя
+        </th>
+        <th>
+            Период
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Period.Name)
+        </td>
+        <td> 
+            @Ajax.ActionLink("Отчёт", "ReportPopup", new { id = item.EmployeeId, period = item.PeriodId }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "result", InsertionMode = InsertionMode.Replace, OnSuccess = "openPopup" })<br />
+
+        </td>
+    </tr>
+}
+
+</table>
+
+
+
+<div id="result" style="display:none;"></div>
+

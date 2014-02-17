@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d8cb9efda8f945fe867282ed65c5785d" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="CptDashModel.BidLinePerPeriod" Width="1.5" PointX="6.5" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CptDashModel.BidLine" Width="1.5" PointX="3.5" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CptDashModel.Category" Width="1.5" PointX="9.375" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CptDashModel.DailyPayment" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CptDashModel.Employee" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="CptDashModel.Period" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CptDashModel.Report" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="CptDashModel.FK_BidLinePerPeriods_BidLines" ManuallyRouted="false" />
+        <AssociationConnector Association="CptDashModel.FK_BidLinePerPeriods_Employees" ManuallyRouted="false" />
+        <AssociationConnector Association="CptDashModel.FK_BidLinePerPeriods_Periods" ManuallyRouted="false" />
+        <AssociationConnector Association="CptDashModel.FK_DailyPayments_Categories" ManuallyRouted="false" />
+        <AssociationConnector Association="CptDashModel.FK_ReportDailyPayment" ManuallyRouted="false" />
+        <AssociationConnector Association="CptDashModel.FK_Reports_Employees" ManuallyRouted="false" />
+        <AssociationConnector Association="CptDashModel.FK_PeriodReport" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

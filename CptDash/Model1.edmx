@@ -1,0 +1,472 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CptDashModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BidLinePerPeriods">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BidLineId" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="PeriodId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BidLines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DailyPayments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ReportId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Number" Type="int" />
+        </EntityType>
+        <EntityType Name="Periods">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reports">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PeriodId" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BidLinePerPeriods_BidLines">
+          <End Role="BidLines" Type="Self.BidLines" Multiplicity="1" />
+          <End Role="BidLinePerPeriods" Type="Self.BidLinePerPeriods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BidLines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BidLinePerPeriods">
+              <PropertyRef Name="BidLineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BidLinePerPeriods_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="BidLinePerPeriods" Type="Self.BidLinePerPeriods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BidLinePerPeriods">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BidLinePerPeriods_Periods">
+          <End Role="Periods" Type="Self.Periods" Multiplicity="1" />
+          <End Role="BidLinePerPeriods" Type="Self.BidLinePerPeriods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Periods">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BidLinePerPeriods">
+              <PropertyRef Name="PeriodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyPayments_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="DailyPayments" Type="Self.DailyPayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyPayments">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PeriodReport">
+          <End Role="Periods" Type="Self.Periods" Multiplicity="1" />
+          <End Role="Reports" Type="Self.Reports" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Periods">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reports">
+              <PropertyRef Name="PeriodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReportDailyPayment">
+          <End Role="Reports" Type="Self.Reports" Multiplicity="1" />
+          <End Role="DailyPayments" Type="Self.DailyPayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reports">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyPayments">
+              <PropertyRef Name="ReportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reports_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Reports" Type="Self.Reports" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reports">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CptDashModelStoreContainer">
+          <EntitySet Name="BidLinePerPeriods" EntityType="Self.BidLinePerPeriods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BidLines" EntityType="Self.BidLines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DailyPayments" EntityType="Self.DailyPayments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Periods" EntityType="Self.Periods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reports" EntityType="Self.Reports" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BidLinePerPeriods_BidLines" Association="Self.FK_BidLinePerPeriods_BidLines">
+            <End Role="BidLines" EntitySet="BidLines" />
+            <End Role="BidLinePerPeriods" EntitySet="BidLinePerPeriods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BidLinePerPeriods_Employees" Association="Self.FK_BidLinePerPeriods_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="BidLinePerPeriods" EntitySet="BidLinePerPeriods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BidLinePerPeriods_Periods" Association="Self.FK_BidLinePerPeriods_Periods">
+            <End Role="Periods" EntitySet="Periods" />
+            <End Role="BidLinePerPeriods" EntitySet="BidLinePerPeriods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyPayments_Categories" Association="Self.FK_DailyPayments_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="DailyPayments" EntitySet="DailyPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PeriodReport" Association="Self.FK_PeriodReport">
+            <End Role="Periods" EntitySet="Periods" />
+            <End Role="Reports" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReportDailyPayment" Association="Self.FK_ReportDailyPayment">
+            <End Role="Reports" EntitySet="Reports" />
+            <End Role="DailyPayments" EntitySet="DailyPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reports_Employees" Association="Self.FK_Reports_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Reports" EntitySet="Reports" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CptDashModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BidLinePerPeriod">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BidLineId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="PeriodId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BidLine" Relationship="Self.FK_BidLinePerPeriods_BidLines" FromRole="BidLinePerPeriods" ToRole="BidLines" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_BidLinePerPeriods_Employees" FromRole="BidLinePerPeriods" ToRole="Employees" />
+          <NavigationProperty Name="Period" Relationship="Self.FK_BidLinePerPeriods_Periods" FromRole="BidLinePerPeriods" ToRole="Periods" />
+        </EntityType>
+        <EntityType Name="BidLine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="BidLinePerPeriods" Relationship="Self.FK_BidLinePerPeriods_BidLines" FromRole="BidLines" ToRole="BidLinePerPeriods" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="DailyPayments" Relationship="Self.FK_DailyPayments_Categories" FromRole="Categories" ToRole="DailyPayments" />
+        </EntityType>
+        <EntityType Name="DailyPayment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ReportId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_DailyPayments_Categories" FromRole="DailyPayments" ToRole="Categories" />
+          <NavigationProperty Name="Report" Relationship="Self.FK_ReportDailyPayment" FromRole="DailyPayments" ToRole="Reports" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="BidLinePerPeriods" Relationship="Self.FK_BidLinePerPeriods_Employees" FromRole="Employees" ToRole="BidLinePerPeriods" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_Reports_Employees" FromRole="Employees" ToRole="Reports" />
+          <Property Name="Number" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Period">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="BidLinePerPeriods" Relationship="Self.FK_BidLinePerPeriods_Periods" FromRole="Periods" ToRole="BidLinePerPeriods" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_PeriodReport" FromRole="Periods" ToRole="Reports" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PeriodId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DailyPayments" Relationship="Self.FK_ReportDailyPayment" FromRole="Reports" ToRole="DailyPayments" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Reports_Employees" FromRole="Reports" ToRole="Employees" />
+          <NavigationProperty Name="Period" Relationship="Self.FK_PeriodReport" FromRole="Reports" ToRole="Periods" />
+        </EntityType>
+        <Association Name="FK_BidLinePerPeriods_BidLines">
+          <End Role="BidLines" Type="Self.BidLine" Multiplicity="1" />
+          <End Role="BidLinePerPeriods" Type="Self.BidLinePerPeriod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BidLines">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BidLinePerPeriods">
+              <PropertyRef Name="BidLineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BidLinePerPeriods_Employees">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+          <End Role="BidLinePerPeriods" Type="Self.BidLinePerPeriod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BidLinePerPeriods">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BidLinePerPeriods_Periods">
+          <End Role="Periods" Type="Self.Period" Multiplicity="1" />
+          <End Role="BidLinePerPeriods" Type="Self.BidLinePerPeriod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Periods">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BidLinePerPeriods">
+              <PropertyRef Name="PeriodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyPayments_Categories">
+          <End Role="Categories" Type="Self.Category" Multiplicity="1" />
+          <End Role="DailyPayments" Type="Self.DailyPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyPayments">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReportDailyPayment">
+          <End Role="Reports" Type="Self.Report" Multiplicity="1" />
+          <End Role="DailyPayments" Type="Self.DailyPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reports">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DailyPayments">
+              <PropertyRef Name="ReportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reports_Employees">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Reports" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reports">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PeriodReport">
+          <End Role="Periods" Type="Self.Period" Multiplicity="1" />
+          <End Role="Reports" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Periods">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reports">
+              <PropertyRef Name="PeriodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CptDashEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BidLinePerPeriods" EntityType="Self.BidLinePerPeriod" />
+          <EntitySet Name="BidLines" EntityType="Self.BidLine" />
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="DailyPayments" EntityType="Self.DailyPayment" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="Periods" EntityType="Self.Period" />
+          <EntitySet Name="Reports" EntityType="Self.Report" />
+          <AssociationSet Name="FK_BidLinePerPeriods_BidLines" Association="Self.FK_BidLinePerPeriods_BidLines">
+            <End Role="BidLines" EntitySet="BidLines" />
+            <End Role="BidLinePerPeriods" EntitySet="BidLinePerPeriods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BidLinePerPeriods_Employees" Association="Self.FK_BidLinePerPeriods_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="BidLinePerPeriods" EntitySet="BidLinePerPeriods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BidLinePerPeriods_Periods" Association="Self.FK_BidLinePerPeriods_Periods">
+            <End Role="Periods" EntitySet="Periods" />
+            <End Role="BidLinePerPeriods" EntitySet="BidLinePerPeriods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyPayments_Categories" Association="Self.FK_DailyPayments_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="DailyPayments" EntitySet="DailyPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReportDailyPayment" Association="Self.FK_ReportDailyPayment">
+            <End Role="Reports" EntitySet="Reports" />
+            <End Role="DailyPayments" EntitySet="DailyPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reports_Employees" Association="Self.FK_Reports_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Reports" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PeriodReport" Association="Self.FK_PeriodReport">
+            <End Role="Periods" EntitySet="Periods" />
+            <End Role="Reports" EntitySet="Reports" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CptDashModelStoreContainer" CdmEntityContainer="CptDashEntities">
+          <EntitySetMapping Name="BidLinePerPeriods">
+            <EntityTypeMapping TypeName="CptDashModel.BidLinePerPeriod">
+              <MappingFragment StoreEntitySet="BidLinePerPeriods">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BidLineId" ColumnName="BidLineId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BidLines">
+            <EntityTypeMapping TypeName="CptDashModel.BidLine">
+              <MappingFragment StoreEntitySet="BidLines">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="CptDashModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DailyPayments">
+            <EntityTypeMapping TypeName="CptDashModel.DailyPayment">
+              <MappingFragment StoreEntitySet="DailyPayments">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ReportId" ColumnName="ReportId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="CptDashModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Periods">
+            <EntityTypeMapping TypeName="CptDashModel.Period">
+              <MappingFragment StoreEntitySet="Periods">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports">
+            <EntityTypeMapping TypeName="CptDashModel.Report">
+              <MappingFragment StoreEntitySet="Reports">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
